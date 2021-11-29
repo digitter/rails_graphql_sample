@@ -1,17 +1,30 @@
 module Types
   class QueryType < Types::BaseObject
-    # Add `node(id: ID!) and `nodes(ids: [ID!]!)`
-    include GraphQL::Types::Relay::HasNodeField
-    include GraphQL::Types::Relay::HasNodesField
+    field :post, PostType, null: false do
+      description 'find a post by id'
+      argument :id, ID, required: true
+    end
 
-    # Add root-level fields here.
-    # They will be entry points for queries on your schema.
+    field :posts, [PostType], null: true do
+      description 'fetch all posts'
+    end
 
-    # TODO: remove me
-    field :test_field, String, null: false,
-      description: "An example field added by the generator"
-    def test_field
-      "Hello World!"
+    field :comment, CommentType, null: false do
+      description 'find a comment by id'
+      argument :id, ID, required: true
+    end
+
+    def post(id:)
+      Post.find(id)
+    end
+
+    def posts
+      Post.all.includes(:comments)
+    end
+
+    def comment(id:)
+      Comment.find(id)
     end
   end
 end
+
