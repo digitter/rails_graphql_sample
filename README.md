@@ -1,4 +1,4 @@
-## Installation
+## Installation and setup
 
 ```
 $ bunlde install
